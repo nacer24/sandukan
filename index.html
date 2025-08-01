@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Get Your Free eBook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .form-box {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 400px;
+    }
+    .form-box h1 {
+      margin-bottom: 20px;
+      color: #28a745;
+    }
+    input[type="email"] {
+      padding: 12px;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+    button {
+      padding: 12px 24px;
+      background-color: #28a745;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #response {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-box">
+    <h1>Get Your Free eBook</h1>
+    <form id="ebookForm">
+      <input type="email" name="email" placeholder="Enter your email" required>
+      <button type="submit">Subscribe & Get eBook</button>
+    </form>
+    <div id="response"></div>
+  </div>
+
+  <script>
+    document.getElementById("ebookForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const email = form.email.value;
+      const responseEl = document.getElementById("response");
+
+      const data = new URLSearchParams();
+      data.append("email", email);
+
+      fetch("https://script.google.com/macros/s/AKfycbw1Ye4Rk13Qo8lz5SxMav7oeTeqYEFSEPbf20cxonAwP5MeaWwtao3Any5g9uzqWkQB/exec", {
+        method: "POST",
+        body: data
+      })
+      .then(res => res.text())
+      .then(msg => {
+        responseEl.textContent = "✅ " + msg;
+        form.reset();
+      })
+      .catch(() => {
+        responseEl.textContent = "❌ Something went wrong. Try again.";
+      });
+    });
+  </script>
+</body>
+</html>
