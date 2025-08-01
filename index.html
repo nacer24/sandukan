@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Get Your Free eBook</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -53,7 +53,7 @@
   <div class="form-box">
     <h1>Get Your Free eBook</h1>
     <form id="ebookForm">
-      <input type="email" name="email" placeholder="Enter your email" required>
+      <input type="email" name="email" placeholder="Enter your email" required />
       <button type="submit">Subscribe & Get eBook</button>
     </form>
     <div id="response"></div>
@@ -62,21 +62,23 @@
   <script>
     document.getElementById("ebookForm").addEventListener("submit", function(e) {
       e.preventDefault();
-      const form = e.target;
-      const email = form.email.value;
-      const responseEl = document.getElementById("response");
 
-      const data = new URLSearchParams();
-      data.append("email", email);
+      const form = e.target;
+      const responseEl = document.getElementById("response");
+      const formData = new FormData(form);
 
       fetch("https://script.google.com/macros/s/AKfycbxN5XhLKwSfJvKAODEIdwDYAL0pJQauA5miCX6gklc2tw2wKibRosXHDWpUM2M5I5XY/exec", {
         method: "POST",
-        body: data
+        body: formData,
       })
-      .then(res => res.text())
-      .then(msg => {
-        responseEl.textContent = "✅ " + msg;
-        form.reset();
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === "success") {
+          responseEl.textContent = "✅ Subscription successful! Check your email.";
+          form.reset();
+        } else {
+          responseEl.textContent = "❌ " + (data.message || "Something went wrong. Try again.");
+        }
       })
       .catch(() => {
         responseEl.textContent = "❌ Something went wrong. Try again.";
@@ -85,4 +87,3 @@
   </script>
 </body>
 </html>
-
